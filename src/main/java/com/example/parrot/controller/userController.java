@@ -17,11 +17,12 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
+@RequestMapping("/user")
 public class userController {
     @Resource
     private UserService userService;
 
-    @PostMapping("/user/login")
+    @PostMapping("/login")
     public BaseResponse<LoginUserVO> userLogin(@RequestBody UserLoginRequest userLogin, HttpServletRequest request) {
         if (request == null || userLogin == null || StringUtils.isAnyBlank(userLogin.getUserAccount(), userLogin.getUserPassword())) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -32,7 +33,7 @@ public class userController {
         return ResultUtil.success(loginUserVO);
     }
 
-    @PostMapping("/user/register")
+    @PostMapping("/register")
     public BaseResponse<Long> userRegister(@RequestBody UserRegisterRequest userRegister) {
         if (userRegister == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -44,13 +45,14 @@ public class userController {
         return ResultUtil.success(id);
     }
 
-    @GetMapping("/user/getLoginUser")
+    @GetMapping("/getLoginUser")
     public BaseResponse<User> getLoginUser(HttpServletRequest request) {
         if (request == null) throw new BusinessException(ErrorCode.PARAMS_ERROR);
         return ResultUtil.success(userService.getLoginUser(request));
     }
 
-    @PostMapping("/user/logout")
+
+    @PostMapping("/logout")
     public BaseResponse<Boolean> userLogout(HttpServletRequest request){
         if(request == null) throw new BusinessException(ErrorCode.PARAMS_ERROR);
         return ResultUtil.success(userService.userLogout(request));
